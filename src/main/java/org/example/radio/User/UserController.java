@@ -1,5 +1,6 @@
 package org.example.radio.User;
 
+import jakarta.validation.Valid;
 import org.example.radio.User.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +17,9 @@ public class UserController {
         return userService.findbyIdentifier(identifier);
     }
 
+
     @PostMapping("/create")
-    public User createUser(@RequestBody User user) {
+    public User createUser(@Valid @RequestBody User user) {
         return userService.CreateUser(user);
     }
 
@@ -31,13 +33,11 @@ public class UserController {
         return userService.UpdateUser(user);
     }
 
-    // Endpoint para validar PIN
     @PostMapping("/validate-pin")
     public boolean validatePin(@RequestBody PinValidationRequest request) {
         return userService.validatePin(request.getIdentifier(), request.getPin());
     }
 
-    // Clase interna para recibir los datos de validación PIN
     public static class PinValidationRequest {
         private String identifier;
         private String pin;
@@ -45,7 +45,6 @@ public class UserController {
         public String getIdentifier() {
             return identifier;
         }
-
         public void setIdentifier(String identifier) {
             this.identifier = identifier;
         }
@@ -53,7 +52,6 @@ public class UserController {
         public String getPin() {
             return pin;
         }
-
         public void setPin(String pin) {
             this.pin = pin;
         }

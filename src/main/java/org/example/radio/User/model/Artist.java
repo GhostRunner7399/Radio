@@ -2,9 +2,11 @@ package org.example.radio.User.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import org.example.radio.Music.Model.Album;
 
 import java.util.List;
+
 
 @Data
 @Entity

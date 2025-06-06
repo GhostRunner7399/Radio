@@ -1,8 +1,11 @@
 package org.example.radio.User;
 
 import org.example.radio.User.model.User;
+import org.example.radio.exception.InvalidPinException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.example.radio.exception.UserNotFoundException;
+import org.example.radio.exception.PinMismatchException;
 
 import java.util.Optional;
 
@@ -12,9 +15,11 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+
+
     public User findbyIdentifier(String identifier) {
-        Optional<User> user = userRepository.findByIdentifier(identifier);
-        return user.orElseThrow(() -> new RuntimeException("User not found"));
+        return userRepository.findByIdentifier(identifier)
+                .orElseThrow(() -> new UserNotFoundException("El mae: " + identifier +" no exite loco" ));
     }
 
     public User CreateUser(User user) {
@@ -29,18 +34,26 @@ public class UserService {
         userRepository.deleteByIdentifier(identifier);
     }
 
-    // Método para validar PIN
+
     public boolean validatePin(String identifier, String inputPin) {
-        Optional<User> userOptional = userRepository.findByIdentifier(identifier);
-        if (userOptional.isEmpty()) {
-            throw new RuntimeException("User not found");
-        }
-        User user = userOptional.get();
+        validatePinFormat(inputPin);  // Validación explícita adicional
+
+        User user = findbyIdentifier(identifier);
 
         if (user.getPin() == null) {
-            throw new RuntimeException("sin pin sos tico");
+            throw new PinMismatchException("El usuario '" + identifier + "' no tiene PIN configurado.");
         }
 
-        return user.getPin().equals(inputPin);
+        if (!user.getPin().equals(inputPin)) {
+            throw new PinMismatchException("PIN inválido para el usuario '" + identifier + "'.");
+        }
+
+        return true;
+    }
+
+    private void validatePinFormat(String pin) {
+        if (pin == null || !pin.matches("\\d{4}")) {
+            throw new InvalidPinException("PIN inválido: debe contener exactamente 4 dígitos numéricos.");
+        }
     }
 }
