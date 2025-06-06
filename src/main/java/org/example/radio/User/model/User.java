@@ -14,20 +14,14 @@ public class User {
 
     private String identifier;
 
-    @Column
-    public String firstname;
+    private String firstname;
 
-    @Column
-    public String username;
+    private String username;
 
     @Column(unique = true)
-    public String email;
+    private String email;
 
-    @Column
-    public String password;
+    private String password;
 
-    @Column
-    private String pin;  // <-- Campo PIN agregado
-
-
+    private String pin;
 }

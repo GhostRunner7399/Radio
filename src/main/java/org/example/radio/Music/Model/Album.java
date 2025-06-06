@@ -1,22 +1,29 @@
 package org.example.radio.Music.Model;
 
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+import org.example.radio.User.model.Artist;
+
+import java.util.List;
 
 @Data
+@Entity
 @Table(name = "Album")
-
 public class Album {
+
     @Id
-    long idAlbum;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long idAlbum;
 
-    String name;
+    private String name;
 
-    int TotalSongs;
+    private int year;
 
-    int year;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_artist")
+    private Artist artist;
 
-    int idSonglist;
 
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Song> songs;
 }

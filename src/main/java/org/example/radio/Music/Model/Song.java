@@ -13,7 +13,14 @@ public class Song {
     private int idSong;
 
     private String title;
-    private String artist;
 
-    private String album; // Si luego tienes entidad Album, esto se vuelve @ManyToOne
+    private String genre;
+
+    private String lyrics;
+
+    private String url;
+
+    @ManyToOne
+    @JoinColumn(name = "album_id")
+    private Album album;
 }

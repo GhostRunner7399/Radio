@@ -13,12 +13,12 @@ public class AlbumController {
     @Autowired
     private AlbumService albumService;
 
-    @GetMapping
+    @GetMapping("")
     public List<Album> getAllAlbums() {
         return albumService.getAllAlbums();
     }
 
-    @PostMapping
+    @PostMapping("/SaveAlbum")
     public Album saveAlbum(@RequestBody Album album) {
         return albumService.saveAlbum(album);
     }

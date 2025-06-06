@@ -2,10 +2,13 @@ package org.example.radio.Music.Model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.example.radio.User.model.User;
 
-@Entity
+import java.util.List;
+
 @Data
-@Table(name = "Playlist")
+@Entity
+@Table(name = "Playlists")
 public class Playlist {
 
     @Id
@@ -16,7 +19,16 @@ public class Playlist {
 
     private String description;
 
-    private int totalSongs;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User owner;
 
-    private String createdBy;
+    @ManyToMany
+    @JoinTable(
+            name = "playlist_songs",
+            joinColumns = @JoinColumn(name = "playlist_id"),
+            inverseJoinColumns = @JoinColumn(name = "song_id")
+    )
+    private List<Song> songs;
 }
+
