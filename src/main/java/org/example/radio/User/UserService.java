@@ -12,12 +12,10 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-
     public User findbyIdentifier(String identifier) {
         Optional<User> user = userRepository.findByIdentifier(identifier);
-        return user.orElseThrow(() -> new RuntimeException("User not found"));  // Lanza una excepción si no se encuentra
+        return user.orElseThrow(() -> new RuntimeException("User not found"));
     }
-
 
     public User CreateUser(User user) {
         return userRepository.save(user);
@@ -28,9 +26,21 @@ public class UserService {
     }
 
     public void DeleteUser(String identifier) {
-        userRepository.deleteByidentifier((identifier));
+        userRepository.deleteByIdentifier(identifier);
     }
 
+    // Método para validar PIN
+    public boolean validatePin(String identifier, String inputPin) {
+        Optional<User> userOptional = userRepository.findByIdentifier(identifier);
+        if (userOptional.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        User user = userOptional.get();
 
+        if (user.getPin() == null) {
+            throw new RuntimeException("sin pin sos tico");
+        }
 
+        return user.getPin().equals(inputPin);
+    }
 }

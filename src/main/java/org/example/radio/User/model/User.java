@@ -1,6 +1,5 @@
 package org.example.radio.User.model;
 
-
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -26,6 +25,9 @@ public class User {
 
     @Column
     public String password;
+
+    @Column
+    private String pin;  // <-- Campo PIN agregado
 
 
 }
